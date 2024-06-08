@@ -1,0 +1,43 @@
+<form [formGroup]="formGroup">
+  <mat-form-field class="example-form-field">
+    <mat-label>Date</mat-label>
+    <input matInput type="date" formControlName="formGroup.get('date')!">
+    @if (formGroup.get('date')?.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formGroup.get('date').setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="example-form-field">
+    <mat-label>Income Source</mat-label>
+    <input matInput type="text" formControlName="form
+Group.get('incomeSource')" />
+    @if (formGroup.get('incomeSource').value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formGroup.get('incomeSource').setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="example-form-field">
+    <mat-label>Amount</mat-label>
+    <input matInput type="number" formControlName="formGroup.get('amount')">
+    @if (formGroup.get('amount').value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formGroup.get('amount').setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="example-form-field">
+    <mat-label>Remarks</mat-label>
+    <input matInput type="text" formControlName="formGroup.get('remarks')">
+    @if (formGroup.get('remarks').value) {
+    <button matSuffix mat-icon-button aria }>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</form>
