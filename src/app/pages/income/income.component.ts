@@ -26,9 +26,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 })
 export class IncomeComponent {
 
-  // how to make formControl required
-
-
   formGroup = new FormGroup({
     date: new FormControl('', Validators.required),
     incomeSource: new FormControl('', Validators.required),
@@ -43,4 +40,9 @@ export class IncomeComponent {
       // handle invalid form
     }
   }
+
+  reset() {
+    this.formGroup.reset();
+  }
+
 }
