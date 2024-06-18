@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'income-page',
@@ -18,21 +19,28 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDatepickerModule,
     ReactiveFormsModule,
   ],
-
+  providers: [provideNativeDateAdapter()],
   templateUrl: './income.component.html',
   styleUrl: './income.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IncomeComponent {
 
+  // how to make formControl required
+
+
   formGroup = new FormGroup({
-    date: new FormControl(''),
-    incomeSource: new FormControl(''),
-    amount: new FormControl(''),
+    date: new FormControl('', Validators.required),
+    incomeSource: new FormControl('', Validators.required),
+    amount: new FormControl('', Validators.required),
     remarks: new FormControl(''),
   });
 
   save() {
-
+    if (this.formGroup.valid) {
+      console.log('form', this.formGroup.value);
+    } else {
+      // handle invalid form
+    }
   }
 }
