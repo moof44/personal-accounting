@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IncomeComponent } from './pages/income/income.component';
-//import { IncomeStore } from './pages/income/store/income.store';
+import { IncomeStore } from './pages/income/store/income.store';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { IncomeComponent } from './pages/income/income.component';
   imports: [
     RouterOutlet,
     IncomeComponent,
-    //IncomeStore,
+    IncomeStore,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

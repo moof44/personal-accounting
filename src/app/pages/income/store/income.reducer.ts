@@ -15,11 +15,9 @@ export const initialState: State = adapter.getInitialState({
   // additional entity state properties
 });
 
-console.log('initialState', initialState);
-
 export const reducer = createReducer(
   initialState,
-  on(IncomeActions.addIncome,
+  on(IncomeActions.addIncomeSuccess,
     (state, action) => adapter.addOne(action.income, state)
   ),
   on(IncomeActions.upsertIncome,
@@ -43,7 +41,7 @@ export const reducer = createReducer(
   on(IncomeActions.deleteIncomes,
     (state, action) => adapter.removeMany(action.ids, state)
   ),
-  on(IncomeActions.loadIncomes,
+  on(IncomeActions.loadIncomesSuccess,
     (state, action) => adapter.setAll(action.incomes, state)
   ),
   on(IncomeActions.clearIncomes,

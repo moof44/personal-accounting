@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { IncomeService } from './income.service';
+import {MatCardModule} from '@angular/material/card';
+import { IncomeTableComponent } from './components/income-table/income-table.component';
 
 @Component({
   selector: 'income-page',
@@ -19,6 +21,8 @@ import { IncomeService } from './income.service';
     MatIconModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    MatCardModule,
+    IncomeTableComponent,
   ],
   providers: [provideNativeDateAdapter(),],
   templateUrl: './income.component.html',
@@ -27,11 +31,14 @@ import { IncomeService } from './income.service';
 })
 export class IncomeComponent{
   // inject
-  private _income = inject(IncomeService);
+  private _income: IncomeService = inject(IncomeService);
+
+  // OUTPUT
+  income$ = this._income.income$;
 
   // lifecycle
   ngOnInit(){
-    this._income.income$.subscribe(data => console.log('income', data));
+    this._income.init();
   }
 
   formGroup = new FormGroup({
@@ -44,6 +51,7 @@ export class IncomeComponent{
   save() {
     if (this.formGroup.valid) {
       console.log('form', this.formGroup.value);
+      this._income.addIncome(this.formGroup.value as any);
     } else {
       // handle invalid form
     }

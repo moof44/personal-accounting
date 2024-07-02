@@ -6,8 +6,10 @@ import { Income } from '../model/income.model';
 export const IncomeActions = createActionGroup({
   source: 'Income/API',
   events: {
-    'Load Incomes': props<{ incomes: Income[] }>(),
+    'Load Incomes': emptyProps(),
+    'Load Incomes Success': props<{ incomes: Income[] }>(),
     'Add Income': props<{ income: Income }>(),
+    'Add Income Success': props<{ income: Income }>(),
     'Upsert Income': props<{ income: Income }>(),
     'Add Incomes': props<{ incomes: Income[] }>(),
     'Upsert Incomes': props<{ incomes: Income[] }>(),

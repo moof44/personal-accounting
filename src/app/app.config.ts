@@ -29,6 +29,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
-    //importProvidersFrom(StoreConfigModule),
+    importProvidersFrom(StoreConfigModule),
 ],
 };
