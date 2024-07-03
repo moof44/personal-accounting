@@ -7,7 +7,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { IncomeComponent } from './pages/income/income.component';
-import { IncomeStore } from './pages/income/store/income.store';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +15,6 @@ import { IncomeStore } from './pages/income/store/income.store';
     RouterOutlet,
     RouterModule,
     IncomeComponent,
-    IncomeStore,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

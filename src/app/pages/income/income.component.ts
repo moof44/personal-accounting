@@ -1,33 +1,25 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
-import { IncomeService } from './income.service';
-import {MatCardModule} from '@angular/material/card';
-import { IncomeTableComponent } from './components/income-table/income-table.component';
-import { AddUpdateIncomeComponent } from './components/add-update-income/add-update-income.component';
 import { Store } from '@ngrx/store';
+import { SharedTableModel } from '../../shared/model/shared-table.model';
+import { SharedTableComponent } from '../../shared/shared-table/shared-table.component';
+import { AddUpdateIncomeComponent } from './components/add-update-income/add-update-income.component';
+import { IncomeTableComponent } from './components/income-table/income-table.component';
 import { IncomeActions } from './store/income.actions';
 import { selectAll } from './store/income.reducer';
+import { IncomeStore } from './store/income.store';
 
 @Component({
   selector: 'income-page',
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDatepickerModule,
-    ReactiveFormsModule,
+    IncomeStore,
     MatCardModule,
     IncomeTableComponent,
     AddUpdateIncomeComponent,
+    SharedTableComponent,
   ],
   providers: [provideNativeDateAdapter(),],
   templateUrl: './income.component.html',
@@ -36,15 +28,25 @@ import { selectAll } from './store/income.reducer';
 })
 export class IncomeComponent{
   // inject
-  private _income: IncomeService = inject(IncomeService);
   private _store = inject(Store);
 
   // OUTPUT
   income$ = this._store.select(selectAll);
+  table:SharedTableModel[] = [];
 
   // lifecycle
   ngOnInit(){
     this._store.dispatch(IncomeActions.loadIncomes());
+    this._init();
+  }
+
+  private _init(){
+    this.table = [
+      {label: 'Date', column: 'date'},
+      {label: 'Income Source', column: 'incomeSource'},
+      {label: 'Amount', column: 'amount'},
+      {label: 'Remarks', column: 'remarks'},
+    ]
   }
 
 }

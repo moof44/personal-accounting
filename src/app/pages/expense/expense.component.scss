@@ -1,3 +1,16 @@
 :host {
-  display: block;
+  mat-card{
+    mat-card-content{
+      display: flex;
+      flex-direction: column;
+      gap:16px;
+    }
+  }
+  ::ng-deep{
+    mat-card-title.mat-mdc-card-title{
+      padding:1rem;
+    }
+  }
 }
+
+

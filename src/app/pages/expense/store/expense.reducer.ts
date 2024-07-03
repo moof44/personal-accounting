@@ -1,4 +1,4 @@
-import { createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
 import { ExpenseActions } from './expense.actions';
 import { EntityAdapter, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Expense } from '../model/expense.model';
@@ -50,3 +50,18 @@ export const reducer = createReducer(
     state => adapter.removeAll(state)
   ),
 );
+
+export const expenseFeature = createFeature({
+  name: expenseFeatureKey,
+  reducer,
+  extraSelectors: ({ selectExpenseState }) => ({
+    ...adapter.getSelectors(selectExpenseState)
+  }),
+});
+
+export const {
+  selectIds,
+  selectEntities,
+  selectAll,
+  selectTotal,
+} = expenseFeature;
