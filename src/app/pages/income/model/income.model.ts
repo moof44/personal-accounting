@@ -4,10 +4,3 @@ export interface Income{
     amount: number;
     remarks: string;
 }
-
-export interface Expense{
-    date: Date;
-    expenseSource: string;
-    amount: number;
-    remarks: string;
-}

@@ -1,0 +1,23 @@
+.example-container {
+    height:-webkit-fill-available;
+}
+
+.sidenav-content {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+
+    ::ng-deep{
+        income-page{
+            width:100%;
+        }
+    }
+}
+
+.example-sidenav {
+    padding: 20px;
+}
+
+a{
+    cursor: pointer;
+}

@@ -1,11 +1,15 @@
 :host {
-  form{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  mat-card{
+    mat-card-content{
+      display: flex;
+      flex-direction: column;
+      gap:16px;
+    }
+  }
+
+  ::ng-deep{
+    mat-card-title.mat-mdc-card-title{
+      padding:1rem;
+    }
   }
 }
-.example-form-field {
-  width: 200px;
-}
-

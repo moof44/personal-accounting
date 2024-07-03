@@ -9,6 +9,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { IncomeService } from './income.service';
 import {MatCardModule} from '@angular/material/card';
 import { IncomeTableComponent } from './components/income-table/income-table.component';
+import { AddUpdateIncomeComponent } from './components/add-update-income/add-update-income.component';
+import { Store } from '@ngrx/store';
+import { IncomeActions } from './store/income.actions';
+import { selectAll } from './store/income.reducer';
 
 @Component({
   selector: 'income-page',
@@ -23,6 +27,7 @@ import { IncomeTableComponent } from './components/income-table/income-table.com
     ReactiveFormsModule,
     MatCardModule,
     IncomeTableComponent,
+    AddUpdateIncomeComponent,
   ],
   providers: [provideNativeDateAdapter(),],
   templateUrl: './income.component.html',
@@ -32,33 +37,14 @@ import { IncomeTableComponent } from './components/income-table/income-table.com
 export class IncomeComponent{
   // inject
   private _income: IncomeService = inject(IncomeService);
+  private _store = inject(Store);
 
   // OUTPUT
-  income$ = this._income.income$;
+  income$ = this._store.select(selectAll);
 
   // lifecycle
   ngOnInit(){
-    this._income.init();
-  }
-
-  formGroup = new FormGroup({
-    date: new FormControl('', Validators.required),
-    incomeSource: new FormControl('', Validators.required),
-    amount: new FormControl('', Validators.required),
-    remarks: new FormControl(''),
-  });
-
-  save() {
-    if (this.formGroup.valid) {
-      console.log('form', this.formGroup.value);
-      this._income.addIncome(this.formGroup.value as any);
-    } else {
-      // handle invalid form
-    }
-  }
-
-  reset() {
-    this.formGroup.reset();
+    this._store.dispatch(IncomeActions.loadIncomes());
   }
 
 }
