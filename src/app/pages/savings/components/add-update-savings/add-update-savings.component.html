@@ -1,0 +1,58 @@
+<mat-card @routeAnimations>
+    <mat-card-title>Add Savings</mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="formGroup">
+            <mat-form-field class="example-form-field">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="datepicker" formControlName="date">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel>Cancel</button>
+                    <button mat-raised-button matDatepickerApply>Apply</button>
+                </mat-datepicker-actions>
+                </mat-datepicker>
+                @if (formGroup.get('date')?.value) {
+                <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+            
+            <mat-form-field class="example-form-field">
+                <mat-label>Description</mat-label>
+                <input matInput type="text" formControlName="description" />
+                @if (formGroup.get('description')?.value) {
+                <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+            
+            <mat-form-field class="example-form-field">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" formControlName="amount">
+                @if (formGroup.get('amount')?.value) {
+                <button matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+            
+            <mat-form-field class="example-form-field">
+                <mat-label>Remarks</mat-label>
+                <input matInput type="text" formControlName="remarks">
+                @if (formGroup.get('remarks')?.value) {
+                <button matSuffix>
+                <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+            <div class="row">
+                <button mat-raised-button color="primary" (click)="save()">Save</button>
+                <button mat-raised-button color="warn" (click)="reset()">Reset</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

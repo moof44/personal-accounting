@@ -1,0 +1,12 @@
+
+<mat-card>
+    <mat-card-content>
+        <app-add-update-savings></app-add-update-savings>
+      <!-- <app-income-table></app-income-table> -->
+        <app-shared-table 
+            [title]="'List Savings'" 
+            [dataSource$]="savings$"
+            [columns]="table"
+        ></app-shared-table>
+    </mat-card-content>
+  </mat-card>

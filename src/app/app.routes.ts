@@ -34,4 +34,11 @@ export const routes: Routes = [
                 (c) => c.CapitalComponent
             ),
     },
+    {
+        path: 'savings',
+        loadComponent: () =>
+            import('./pages/savings/savings.component').then(
+                (c) => c.SavingsComponent
+            ),
+    },
 ];
