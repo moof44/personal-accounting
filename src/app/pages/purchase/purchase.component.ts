@@ -1,42 +1,42 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ExpenseStore } from './store/expense.store';
-import { AddUpdateExpenseComponent } from './components/add-update-expense/add-update-expense.component';
+import { PurchaseStore } from './store/purchase.store';
+import { AddUpdatePurchaseComponent } from './components/add-update-purchase/add-update-purchase.component';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
-import { selectAll } from './store/expense.reducer';
+import { selectAll } from './store/purchase.reducer';
 import { SharedTableModel } from '../../shared/model/shared-table.model';
-import { ExpenseActions } from './store/expense.actions';
+import { PurchaseActions } from './store/purchase.actions';
 import { SharedTableComponent } from '../../shared/shared-table/shared-table.component';
 
 @Component({
-  selector: 'app-expense',
+  selector: 'app-purchase',
   standalone: true,
   imports: [
     CommonModule,
-    ExpenseStore,
-    AddUpdateExpenseComponent,
+    PurchaseStore,
+    AddUpdatePurchaseComponent,
     MatCardModule,
     SharedTableComponent,
     //BrowserAnimationsModule,
   ],
   providers: [provideNativeDateAdapter(),],
-  templateUrl: './expense.component.html',
-  styleUrl: './expense.component.scss',
+  templateUrl: './purchase.component.html',
+  styleUrl: './purchase.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ExpenseComponent {
+export class PurchaseComponent {
   // inject
   private _store = inject(Store);
 
   // OUTPUT
-  expense$ = this._store.select(selectAll);
+  purchase$ = this._store.select(selectAll);
   table:SharedTableModel[] = [];
 
   // lifecycle
   ngOnInit(){
-    this._store.dispatch(ExpenseActions.loadExpenses());
+    this._store.dispatch(PurchaseActions.loadPurchases());
     this._init();
   }
 

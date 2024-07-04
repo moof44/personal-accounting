@@ -1,11 +1,11 @@
 
 <mat-card>
     <mat-card-content>
-        <app-add-update-expense></app-add-update-expense>
+        <app-add-update-capital></app-add-update-capital>
       <!-- <app-income-table></app-income-table> -->
         <app-shared-table 
-            [title]="'List Expense'" 
-            [dataSource$]="expense$"
+            [title]="'List Capital'" 
+            [dataSource$]="capital$"
             [columns]="table"
         ></app-shared-table>
     </mat-card-content>

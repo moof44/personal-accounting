@@ -6,7 +6,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { IncomeComponent } from './pages/income/income.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +13,6 @@ import { IncomeComponent } from './pages/income/income.component';
   imports: [
     RouterOutlet,
     RouterModule,
-    IncomeComponent,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

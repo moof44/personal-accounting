@@ -20,4 +20,18 @@ export const routes: Routes = [
                 (c) => c.ExpenseComponent
             ),
     },
+    {
+        path: 'purchases',
+        loadComponent: () =>
+            import('./pages/purchase/purchase.component').then(
+                (c) => c.PurchaseComponent
+            ),
+    },
+    {
+        path: 'capital',
+        loadComponent: () =>
+            import('./pages/capital/capital.component').then(
+                (c) => c.CapitalComponent
+            ),
+    },
 ];
