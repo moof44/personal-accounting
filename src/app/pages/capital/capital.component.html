@@ -1,0 +1,12 @@
+
+<mat-card>
+    <mat-card-content>
+        <app-add-update-capital></app-add-update-capital>
+      <!-- <app-income-table></app-income-table> -->
+        <app-shared-table 
+            [title]="'List Capital'" 
+            [dataSource$]="capital$"
+            [columns]="table"
+        ></app-shared-table>
+    </mat-card-content>
+  </mat-card>

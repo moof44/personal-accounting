@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-content>
+    <app-add-update-liability></app-add-update-liability>
+    <!-- <app-income-table></app-income-table> -->
+    <app-shared-table 
+      [title]="'List Liabilities'" 
+      [dataSource$]="liability$"
+      [columns]="table"
+    ></app-shared-table>
+  </mat-card-content>
+</mat-card>

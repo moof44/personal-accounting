@@ -1,0 +1,24 @@
+@if (dataSource$ && displayedColumns.length > 0) {
+    <mat-card @routeAnimations>
+        <mat-card-title>{{title}}</mat-card-title>
+        <mat-card-content>
+            <mat-table [dataSource]="dataSource$" matSort>
+                @for (s of columns; track $index) {
+                    <ng-container [matColumnDef]="s.column">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> {{s.label}} </mat-header-cell>
+                        @if (s.column === 'date') {
+                            <mat-cell *matCellDef="let row"> {{row[s.column] | date: 'MMM d, yyyy'}} </mat-cell>
+                        } @else {
+                            <mat-cell *matCellDef="let row"> {{row[s.column]}} </mat-cell>
+                        }
+                    </ng-container>
+                }
+                
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            
+            </mat-table>
+        </mat-card-content>
+    </mat-card>
+        
+}

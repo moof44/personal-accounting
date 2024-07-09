@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-content>
+    <app-add-update-income></app-add-update-income>
+    <!-- <app-income-table></app-income-table> -->
+    <app-shared-table 
+      [title]="'List Income'"
+      [dataSource$]="income$"
+      [columns]="table"
+    ></app-shared-table>
+  </mat-card-content>
+</mat-card>

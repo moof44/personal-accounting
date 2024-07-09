@@ -1,0 +1,12 @@
+
+<mat-card>
+    <mat-card-content>
+        <app-add-update-purchase></app-add-update-purchase>
+      <!-- <app-income-table></app-income-table> -->
+        <app-shared-table 
+            [title]="'List Purchase'" 
+            [dataSource$]="purchase$"
+            [columns]="table"
+        ></app-shared-table>
+    </mat-card-content>
+  </mat-card>
