@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, Firestore, addDoc, collection, collectionData, doc } from '@angular/fire/firestore';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { LiabilityActions } from './liability.actions';
-import { catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Observable, catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 
 
@@ -15,8 +16,10 @@ export class LiabilityEffects {
   constructor(
     private _actions$: Actions,
     private _firestore: Firestore,
+    private _store: Store,
   ) {
     this._liabilityCollection = collection(_firestore, this._collectionName);
+    this._eventListener();
   }
 
   loadLiabilitys$ = createEffect(() => 
@@ -34,17 +37,28 @@ export class LiabilityEffects {
     )
   );
 
+  private _eventListener(){
+    (collectionData(this._liabilityCollection, {idField: 'id'}) as Observable<any[]>)
+      .pipe(
+        map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
+        tap(v=>console.log('collectionData:purchase:', v))
+      )
+      .subscribe(liabilities=>{
+        this._store.dispatch(LiabilityActions.loadLiabilitiesSuccess({ liabilities }))
+      })
+  }
+
   // Effect to listen for real-time Firestore updates
-  listenForUpdates$ = createEffect(() => 
-    collectionData(this._liabilityCollection).pipe(
-      tap(v=>console.log('listeforupdates', v)),
-      catchError(e=>{
-        console.log('error', e);
-        return [];
-      }),
-      map((liabilities:any) => LiabilityActions.loadLiabilitiesSuccess({ liabilities })) // Dispatch success action on updates
-    )
-  );
+  // listenForUpdates$ = createEffect(() => 
+  //   collectionData(this._liabilityCollection).pipe(
+  //     tap(v=>console.log('listeforupdates', v)),
+  //     catchError(e=>{
+  //       console.log('error', e);
+  //       return [];
+  //     }),
+  //     map((liabilities:any) => LiabilityActions.loadLiabilitiesSuccess({ liabilities })) // Dispatch success action on updates
+  //   )
+  // );
 
 
   // Effect to add an income

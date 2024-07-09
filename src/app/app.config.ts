@@ -32,3 +32,5 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(StoreConfigModule),
 ],
 };
+
+console.log('environment', environment);

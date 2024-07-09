@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, Firestore, addDoc, collection, collectionData, doc } from '@angular/fire/firestore';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { CapitalActions } from './capital.actions';
-import { catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Observable, catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 
 
@@ -15,8 +16,10 @@ export class CapitalEffects {
   constructor(
     private _actions$: Actions,
     private _firestore: Firestore,
+    private _store: Store,
   ) {
     this._capitalCollection = collection(_firestore, this._collectionName);
+    this._eventListener();
   }
 
   loadCapitals$ = createEffect(() => 
@@ -34,17 +37,28 @@ export class CapitalEffects {
     )
   );
 
+  private _eventListener(){
+    (collectionData(this._capitalCollection, {idField: 'id'}) as Observable<any[]>)
+      .pipe(
+        map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
+        tap(v=>console.log('collectionData:capital:', v))
+      )
+      .subscribe(capitals=>{
+        this._store.dispatch(CapitalActions.loadCapitalsSuccess({ capitals }))
+      })
+  }
+
   // Effect to listen for real-time Firestore updates
-  listenForUpdates$ = createEffect(() => 
-    collectionData(this._capitalCollection).pipe(
-      tap(v=>console.log('listeforupdates', v)),
-      catchError(e=>{
-        console.log('error', e);
-        return [];
-      }),
-      map((capitals:any) => CapitalActions.loadCapitalsSuccess({ capitals })) // Dispatch success action on updates
-    )
-  );
+  // listenForUpdates$ = createEffect(() => 
+  //   collectionData(this._capitalCollection).pipe(
+  //     tap(v=>console.log('listeforupdates', v)),
+  //     catchError(e=>{
+  //       console.log('error', e);
+  //       return [];
+  //     }),
+  //     map((capitals:any) => CapitalActions.loadCapitalsSuccess({ capitals })) // Dispatch success action on updates
+  //   )
+  // );
 
 
   // Effect to add an income

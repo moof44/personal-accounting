@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CollectionReference, Firestore, addDoc, collection, collectionData, doc } from '@angular/fire/firestore';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PurchaseActions } from './purchase.actions';
-import { catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Observable, catchError, exhaustMap, map, take, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 
 
@@ -15,8 +16,10 @@ export class PurchaseEffects {
   constructor(
     private _actions$: Actions,
     private _firestore: Firestore,
+    private _store: Store,
   ) {
     this._purchaseCollection = collection(_firestore, this._collectionName);
+    this._eventListener();
   }
 
   loadPurchases$ = createEffect(() => 
@@ -34,17 +37,29 @@ export class PurchaseEffects {
     )
   );
 
+  private _eventListener(){
+    (collectionData(this._purchaseCollection, {idField: 'id'}) as Observable<any[]>)
+      .pipe(
+        map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
+        tap(v=>console.log('collectionData:purchase:', v))
+      )
+      .subscribe(purchases=>{
+        this._store.dispatch(PurchaseActions.loadPurchasesSuccess({ purchases }))
+      })
+      
+  }
+
   // Effect to listen for real-time Firestore updates
-  listenForUpdates$ = createEffect(() => 
-    collectionData(this._purchaseCollection).pipe(
-      tap(v=>console.log('listeforupdates', v)),
-      catchError(e=>{
-        console.log('error', e);
-        return [];
-      }),
-      map((purchases:any) => PurchaseActions.loadPurchasesSuccess({ purchases })) // Dispatch success action on updates
-    )
-  );
+  // listenForUpdates$ = createEffect(() => 
+  //   collectionData(this._purchaseCollection).pipe(
+  //     tap(v=>console.log('listeforupdates', v)),
+  //     catchError(e=>{
+  //       console.log('error', e);
+  //       return [];
+  //     }),
+  //     map((purchases:any) => PurchaseActions.loadPurchasesSuccess({ purchases })) // Dispatch success action on updates
+  //   )
+  // );
 
 
   // Effect to add an income
