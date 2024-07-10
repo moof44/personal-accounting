@@ -18,7 +18,7 @@ import { SavingStore } from './store/savings.store';
     AddUpdateSavingsComponent,
     MatCardModule,
     SharedTableComponent,
-    SavingStore,
+    //SavingStore,
   ],
   providers: [provideNativeDateAdapter(),],
   templateUrl: './savings.component.html',
