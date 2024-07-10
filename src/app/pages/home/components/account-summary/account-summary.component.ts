@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Functions, httpsCallable} from '@angular/fire/functions';
-import {MatTableModule} from '@angular/material/table';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Functions, httpsCallable } from '@angular/fire/functions';
+import { MatTableModule } from '@angular/material/table';
+import { AccountSummaryService } from '../../../../shared/service/account-summary.service';
 
 @Component({
   selector: 'app-account-summary',
@@ -14,21 +15,56 @@ import {MatTableModule} from '@angular/material/table';
   styleUrl: './account-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountSummaryComponent { 
-  private functions = inject(Functions);
-
+export class AccountSummaryComponent implements OnInit {
   dataSource = ELEMENT_DATA;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
 
-  constructor(){
-    const calculateFinancials = httpsCallable(this.functions, 'calculateFinancials');
-    calculateFinancials()
-      .then(total=>{
-        console.log('calculateFinancials', total);
-      })
+  netIncome: number = 0;
+  totalIncome: number = 0;
+  totalExpense: number = 0;
+  totalPurchase: number = 0;
+  totalCapital: number = 0;
 
+  constructor(
+    private _accountSummaryService: AccountSummaryService,
+  ) {
+    // const calculateFinancials = httpsCallable(this.functions, 'calculateFinancials');
+    // calculateFinancials()
+    //   .then(total=>{
+    //     console.log('calculateFinancials', total);
+    //   })
+  }
+
+  ngOnInit(): void {
+    this._accountSummaryService.netIncome$.subscribe((data) => {
+      this.netIncome = data;
+      console.log('netIncome', data);
+    });
+
+    this._accountSummaryService.incomeInDateRangeTotal$.subscribe((data) => {
+      this.totalIncome = data;
+      console.log('incomesInDateRangeTotal', data);
+    });
+
+    this._accountSummaryService.expenseInDateRangeTotal$.subscribe((data) => {
+      this.totalExpense = data;
+      console.log('expensesInDateRangeTotal', data);
+    });
+
+    this._accountSummaryService.purchaseInDateRangeTotal$.subscribe((data) => {
+      this.totalPurchase = data;
+      console.log('purchasesInDateRangeTotal', data);
+    });
+
+    this._accountSummaryService.capitalInDateRangeTotal$.subscribe((data) => {
+      this.totalCapital = data;
+      console.log('capitalInDateRangeTotal', data);
+    });
   }
 }
+
+// ... (rest of the component code)
+
 
 
 export interface PeriodicElement {

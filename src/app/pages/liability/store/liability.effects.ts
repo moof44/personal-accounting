@@ -29,7 +29,7 @@ export class LiabilityEffects {
         collectionData(this._liabilityCollection).pipe( 
           take(1), 
           map((liabilities:any[])=>liabilities.map(v=>({...v, date: v.date.toDate()}))),
-          tap(v=>console.log('liabilities', v)),
+          // tap(v=>console.log('liabilities', v)),
           map((liabilities:any) => LiabilityActions.loadLiabilitiesSuccess({ liabilities })),
           //catchError(error => of(IncomeActions.loadIncomesFailure({ error })))
         )
@@ -41,7 +41,7 @@ export class LiabilityEffects {
     (collectionData(this._liabilityCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:purchase:', v))
+        // tap(v=>console.log('collectionData:purchase:', v))
       )
       .subscribe(liabilities=>{
         this._store.dispatch(LiabilityActions.loadLiabilitiesSuccess({ liabilities }))
@@ -67,12 +67,12 @@ export class LiabilityEffects {
       ofType(LiabilityActions.addLiability),
       map((action) => action.liability),
       exhaustMap((liability) =>{
-        console.log('liability', liability);
+        // console.log('liability', liability);
         const incomeRef = doc(this._liabilityCollection);
         const toSave = {...liability, id: incomeRef.id};
         return addDoc(this._liabilityCollection, toSave).then(
           (docRef) => {
-            console.log('Document written with ID: ', docRef.id);
+            // console.log('Document written with ID: ', docRef.id);
             return LiabilityActions.addLiabilitySuccess({ liability: toSave });
           },
           // (error) => {

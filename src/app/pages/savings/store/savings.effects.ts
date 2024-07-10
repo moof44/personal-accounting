@@ -29,7 +29,7 @@ export class SavingEffects {
         collectionData(this._savingCollection).pipe( 
           take(1), 
           map((savings:any[])=>savings.map(v=>({...v, date: v.date.toDate()}))),
-          tap(v=>console.log('saving', v)),
+          //tap(v=>console.log('saving', v)),
           map((savings:any) => SavingActions.loadSavingsSuccess({ savings })),
           //catchError(error => of(IncomeActions.loadIncomesFailure({ error })))
         )
@@ -41,7 +41,7 @@ export class SavingEffects {
     (collectionData(this._savingCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:purchase:', v))
+        //tap(v=>console.log('collectionData:purchase:', v))
       )
       .subscribe(savings=>{
         this._store.dispatch(SavingActions.loadSavingsSuccess({ savings }))
@@ -67,12 +67,12 @@ export class SavingEffects {
       ofType(SavingActions.addSaving),
       map((action) => action.saving),
       exhaustMap((saving) =>{
-        console.log('saving', saving);
+        //console.log('saving', saving);
         const incomeRef = doc(this._savingCollection);
         const toSave = {...saving, id: incomeRef.id};
         return addDoc(this._savingCollection, toSave).then(
           (docRef) => {
-            console.log('Document written with ID: ', docRef.id);
+            //console.log('Document written with ID: ', docRef.id);
             return SavingActions.addSavingSuccess({ saving: toSave });
           },
           // (error) => {
