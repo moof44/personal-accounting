@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Functions, httpsCallable} from '@angular/fire/functions';
 import {MatTableModule} from '@angular/material/table';
 
 @Component({
@@ -14,8 +15,19 @@ import {MatTableModule} from '@angular/material/table';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountSummaryComponent { 
+  private functions = inject(Functions);
+
   dataSource = ELEMENT_DATA;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+
+  constructor(){
+    const calculateFinancials = httpsCallable(this.functions, 'calculateFinancials');
+    calculateFinancials()
+      .then(total=>{
+        console.log('calculateFinancials', total);
+      })
+
+  }
 }
 
 
