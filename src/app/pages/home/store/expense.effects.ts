@@ -29,7 +29,7 @@ export class ExpenseEffects {
         collectionData(this._expenseCollection).pipe( 
           take(1), 
           map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-          tap(v=>console.log('expense', v)),
+          //tap(v=>console.log('expense', v)),
           map((expenses:any) => ExpenseActions.loadExpensesSuccess({ expenses })),
           //catchError(error => of(IncomeActions.loadIncomesFailure({ error })))
         )
@@ -42,7 +42,7 @@ export class ExpenseEffects {
     (collectionData(this._expenseCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:expense:', v))
+        //tap(v=>console.log('collectionData:expense:', v))
       )
       .subscribe(expenses=>{
         this._store.dispatch(ExpenseActions.loadExpensesSuccess({ expenses }))
@@ -69,7 +69,7 @@ export class ExpenseEffects {
       ofType(ExpenseActions.addExpense),
       map((action) => action.expense),
       exhaustMap((expense) =>{
-        console.log('expense', expense);
+        //console.log('expense', expense);
         const incomeRef = doc(this._expenseCollection);
         const toSave = {...expense, id: incomeRef.id};
         return addDoc(this._expenseCollection, toSave).then(

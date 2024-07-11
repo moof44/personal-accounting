@@ -29,7 +29,7 @@ export class PurchaseEffects {
         collectionData(this._purchaseCollection).pipe( 
           take(1), 
           map((purchases:any[])=>purchases.map(v=>({...v, date: v.date.toDate()}))),
-          tap(v=>console.log('purchase', v)),
+          // tap(v=>console.log('purchase', v)),
           map((purchases:any) => PurchaseActions.loadPurchasesSuccess({ purchases })),
           //catchError(error => of(IncomeActions.loadIncomesFailure({ error })))
         )
@@ -41,7 +41,7 @@ export class PurchaseEffects {
     (collectionData(this._purchaseCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:purchase:', v))
+        // tap(v=>console.log('collectionData:purchase:', v))
       )
       .subscribe(purchases=>{
         this._store.dispatch(PurchaseActions.loadPurchasesSuccess({ purchases }))
@@ -68,12 +68,12 @@ export class PurchaseEffects {
       ofType(PurchaseActions.addPurchase),
       map((action) => action.purchase),
       exhaustMap((purchase) =>{
-        console.log('purchase', purchase);
+        // console.log('purchase', purchase);
         const incomeRef = doc(this._purchaseCollection);
         const toSave = {...purchase, id: incomeRef.id};
         return addDoc(this._purchaseCollection, toSave).then(
           (docRef) => {
-            console.log('Document written with ID: ', docRef.id);
+            // console.log('Document written with ID: ', docRef.id);
             return PurchaseActions.addPurchaseSuccess({ purchase: toSave });
           },
           // (error) => {

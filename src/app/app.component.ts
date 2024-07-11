@@ -6,6 +6,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { SharedStore } from './shared/store/shared-store';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { RouterModule, RouterOutlet } from '@angular/router';
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    SharedStore,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

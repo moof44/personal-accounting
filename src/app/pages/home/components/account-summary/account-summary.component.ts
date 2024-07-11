@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { AccountSummaryService } from '../../../../shared/service/account-summary.service';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-account-summary',
@@ -13,28 +15,71 @@ import {MatTableModule} from '@angular/material/table';
   styleUrl: './account-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AccountSummaryComponent { 
-  dataSource = ELEMENT_DATA;
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+export class AccountSummaryComponent implements OnInit, OnDestroy {
+  displayedColumns: string[] = ['item', 'total'];
+
+  private incomeSubscription: Subscription | undefined;
+  private capitalSubscription: Subscription | undefined;
+  private expenseSubscription: Subscription | undefined;
+  private purchaseSubscription: Subscription | undefined;
+  private netIncomeSubscription: Subscription | undefined;
+
+  private _dataSource = new BehaviorSubject<any[]>([]);
+  dataSource$ = this._dataSource.asObservable();
+
+  constructor(
+    private _accountSummaryService: AccountSummaryService,
+    private _cd: ChangeDetectorRef,
+  ) {
+  }
+
+  ngOnInit(): void {
+    // Income
+    this.incomeSubscription = this._accountSummaryService.incomeInDateRangeTotal$.subscribe((data) => {
+      this.updateDataSource('Total Income', data, 1);
+    });
+
+    // Capital
+    this.capitalSubscription = this._accountSummaryService.capitalInDateRangeTotal$.subscribe((data) => {
+      this.updateDataSource('Total Capital', data, 2);
+    });
+
+    // Expense
+    this.expenseSubscription = this._accountSummaryService.expenseInDateRangeTotal$.subscribe((data) => {
+      this.updateDataSource('Total Expense', data, 3);
+    });
+
+    // Purchase
+    this.purchaseSubscription = this._accountSummaryService.purchaseInDateRangeTotal$.subscribe((data) => {
+      this.updateDataSource('Total Purchase', data, 4);
+    });
+
+    // Net Income
+    this.netIncomeSubscription = this._accountSummaryService.netIncome$.subscribe((data) => {
+      this.updateDataSource('Net Income', data, 5);
+    });
+  }
+
+  // Helper function to update the dataSource array
+  private updateDataSource(item: string, total: number, id: number) {
+    const isFind = this._dataSource.getValue().findIndex((item) => item.id === id);
+    if (isFind < 0) {
+      this._dataSource.next([...this._dataSource.getValue(), { id, item, total }]);
+    } else {
+      const updatedDataSource = [...this._dataSource.getValue()];
+      updatedDataSource[isFind].total = total;
+      updatedDataSource[isFind].item = item;
+      this._dataSource.next(updatedDataSource);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions when the component is destroyed
+    this.incomeSubscription?.unsubscribe();
+    this.capitalSubscription?.unsubscribe();
+    this.expenseSubscription?.unsubscribe();
+    this.purchaseSubscription?.unsubscribe();
+    this.netIncomeSubscription?.unsubscribe();
+    this._dataSource.complete();
+  }
 }
-
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];

@@ -18,7 +18,7 @@ import { LiabilityStore } from './store/liability.store';
     AddUpdateLiabilityComponent,
     MatCardModule,
     SharedTableComponent,
-    LiabilityStore,
+    //LiabilityStore,
   ],
   providers: [provideNativeDateAdapter(),],
   templateUrl: './liability.component.html',

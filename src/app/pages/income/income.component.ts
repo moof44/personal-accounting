@@ -15,7 +15,7 @@ import { IncomeStore } from './store/income.store';
   selector: 'income-page',
   standalone: true,
   imports: [
-    IncomeStore,
+    //IncomeStore,
     MatCardModule,
     IncomeTableComponent,
     AddUpdateIncomeComponent,

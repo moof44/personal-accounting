@@ -15,7 +15,7 @@ import { SharedTableComponent } from '../../shared/shared-table/shared-table.com
   standalone: true,
   imports: [
     CommonModule,
-    ExpenseStore,
+    //ExpenseStore,
     AddUpdateExpenseComponent,
     MatCardModule,
     SharedTableComponent,

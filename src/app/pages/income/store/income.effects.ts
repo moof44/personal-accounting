@@ -31,7 +31,7 @@ export class IncomeEffects {
     (collectionData(this._incomeCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:income:', v))
+        //tap(v=>console.log('collectionData:income:', v))
       )
       .subscribe(incomes=>{
         this._store.dispatch(IncomeActions.loadIncomesSuccess({ incomes }))
@@ -61,12 +61,12 @@ export class IncomeEffects {
       ofType(IncomeActions.addIncome),
       map((action) => action.income),
       exhaustMap((income) =>{
-        console.log('income', income);
+        // console.log('income', income);
         const incomeRef = doc(this._incomeCollection);
         const toSave = {...income, id: incomeRef.id};
         return addDoc(this._incomeCollection, toSave).then(
           (docRef) => {
-            console.log('Document written with ID: ', docRef.id);
+            // console.log('Document written with ID: ', docRef.id);
             return IncomeActions.addIncomeSuccess({ income: toSave });
           },
           // (error) => {

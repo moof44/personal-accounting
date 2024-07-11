@@ -29,7 +29,7 @@ export class CapitalEffects {
         collectionData(this._capitalCollection).pipe( 
           take(1), 
           map((capitals:any[])=>capitals.map(v=>({...v, date: v.date.toDate()}))),
-          tap(v=>console.log('capital', v)),
+          // tap(v=>console.log('capital', v)),
           map((capitals:any) => CapitalActions.loadCapitalsSuccess({ capitals })),
           //catchError(error => of(IncomeActions.loadIncomesFailure({ error })))
         )
@@ -41,7 +41,7 @@ export class CapitalEffects {
     (collectionData(this._capitalCollection, {idField: 'id'}) as Observable<any[]>)
       .pipe(
         map((incomes:any[])=>incomes.map(v=>({...v, date: v.date.toDate()}))),
-        tap(v=>console.log('collectionData:capital:', v))
+        // tap(v=>console.log('collectionData:capital:', v))
       )
       .subscribe(capitals=>{
         this._store.dispatch(CapitalActions.loadCapitalsSuccess({ capitals }))
@@ -67,12 +67,12 @@ export class CapitalEffects {
       ofType(CapitalActions.addCapital),
       map((action) => action.capital),
       exhaustMap((capital) =>{
-        console.log('capital', capital);
+        // console.log('capital', capital);
         const incomeRef = doc(this._capitalCollection);
         const toSave = {...capital, id: incomeRef.id};
         return addDoc(this._capitalCollection, toSave).then(
           (docRef) => {
-            console.log('Document written with ID: ', docRef.id);
+            // console.log('Document written with ID: ', docRef.id);
             return CapitalActions.addCapitalSuccess({ capital: toSave });
           },
           // (error) => {
